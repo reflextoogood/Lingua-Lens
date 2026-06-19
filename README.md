@@ -2,7 +2,7 @@
 
 A Chrome extension that helps you learn foreign languages while watching YouTube. Click any word in the subtitles to get a contextual explanation in English — not a dictionary translation, but a real explanation that handles idioms, slang, and cultural references correctly.
 
-![LinguaLens in action](screenshot.png)
+![LinguaLens in action](screenshot.PNG)
 
 ---
 
