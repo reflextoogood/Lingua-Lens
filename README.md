@@ -42,7 +42,7 @@ LinguaLens is not yet on the Chrome Web Store. Load it manually as an unpacked e
 Sign up at [openrouter.ai](https://openrouter.ai), get a free API key, and use model:
 
 ```
-meta-llama/llama-3.1-8b-instruct:free
+openrouter/free
 ```
 
 ---
