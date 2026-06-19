@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LinguaLens</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 340px;
+      background: #1a1a1f;
+      color: #f4f4f5;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    /* ── Header ────────────────────────────────────────────────────────────── */
+
+    .popup-header {
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .popup-header h2 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.01em;
+      color: #f4f4f5;
+    }
+
+    .logo-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #7c5cf7;
+      flex-shrink: 0;
+    }
+
+    /* ── Body ──────────────────────────────────────────────────────────────── */
+
+    .popup-body {
+      padding: 18px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* ── Field ─────────────────────────────────────────────────────────────── */
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: rgba(244, 244, 245, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Inputs & select ───────────────────────────────────────────────────── */
+
+    input,
+    select {
+      width: 100%;
+      padding: 9px 12px;
+      background: #26262e;
+      color: #f4f4f5;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 7px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+
+    input::placeholder {
+      color: rgba(244, 244, 245, 0.22);
+    }
+
+    input:hover,
+    select:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(124, 92, 247, 0.65);
+      box-shadow: 0 0 0 3px rgba(124, 92, 247, 0.12);
+    }
+
+    /* ── Custom select arrow ───────────────────────────────────────────────── */
+
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7' fill='none'%3E%3Cpath d='M1 1L5.5 5.5L10 1' stroke='rgba(244,244,245,0.35)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 34px;
+      cursor: pointer;
+    }
+
+    select option {
+      background: #26262e;
+      color: #f4f4f5;
+    }
+
+    /* ── Divider ───────────────────────────────────────────────────────────── */
+
+    .divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.07);
+      margin: 2px 0;
+    }
+
+    /* ── Save button ───────────────────────────────────────────────────────── */
+
+    #save-btn {
+      width: 100%;
+      padding: 10px 16px;
+      background: #7c5cf7;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      font-family: inherit;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      transition: background 150ms ease, transform 100ms ease, box-shadow 150ms ease;
+    }
+
+    #save-btn:hover {
+      background: #6d4de6;
+      box-shadow: 0 4px 16px rgba(124, 92, 247, 0.25);
+    }
+
+    #save-btn:active {
+      background: #5e3fd4;
+      transform: scale(0.98);
+      box-shadow: none;
+    }
+
+    /* ── Status toast ──────────────────────────────────────────────────────── */
+
+    #status {
+      min-height: 18px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6ee7b7;
+      opacity: 0;
+      transform: translateY(-3px);
+      transition: opacity 200ms ease, transform 200ms ease;
+    }
+
+    #status:not(:empty) {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Custom endpoint row ───────────────────────────────────────────────── */
+
+    #custom-endpoint-row {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="popup-header">
+    <div class="logo-dot"></div>
+    <h2>LinguaLens</h2>
+  </div>
+
+  <div class="popup-body">
+
+    <div class="field">
+      <label for="provider">Provider</label>
+      <select id="provider">
+        <option value="openrouter">OpenRouter</option>
+        <option value="openai">OpenAI</option>
+        <option value="anthropic">Anthropic</option>
+        <option value="grok">Grok (xAI)</option>
+        <option value="groq">Groq</option>
+        <option value="ollama">Ollama (local)</option>
+        <option value="custom">Custom</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="api-key">API Key</label>
+      <input type="password" id="api-key" placeholder="Paste your API key" />
+    </div>
+
+    <div class="field">
+      <label for="model">Model</label>
+      <input type="text" id="model" />
+    </div>
+
+    <div id="custom-endpoint-row" class="field">
+      <label for="custom-endpoint">Endpoint URL</label>
+      <input type="text" id="custom-endpoint" placeholder="https://your-api.example.com/v1/chat/completions" />
+    </div>
+
+    <div class="divider"></div>
+
+    <button id="save-btn">Save Settings</button>
+    <div id="status"></div>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

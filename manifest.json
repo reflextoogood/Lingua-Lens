@@ -1,0 +1,33 @@
+{
+  "manifest_version": 3,
+  "name": "LinguaLens",
+  "version": "0.3.0",
+  "description": "Click any word in YouTube subtitles to get a contextual explanation.",
+
+  "permissions": [
+    "storage"
+  ],
+
+  "host_permissions": [
+    "https://api.anthropic.com/*",
+    "https://api.openai.com/*",
+    "https://openrouter.ai/*"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "LinguaLens"
+  }
+}
