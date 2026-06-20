@@ -20,9 +20,6 @@ function syncProviderUI() {
   const p = providerEl.value;
   modelEl.placeholder = MODEL_DEFAULTS[p] || "";
   customEndpointRow.style.display = p === "custom" ? "block" : "none";
-  // Clear API key and model when provider changes (old key won't work for new provider)
-  apiKeyEl.value = "";
-  modelEl.value = "";
 }
 
 providerEl.addEventListener("change", syncProviderUI);
