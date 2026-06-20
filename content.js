@@ -31,7 +31,7 @@ function wrapWordsInSegments() {
 
     const html = text.split(/(\s+)/).map(token => {
       if (/^\s+$/.test(token)) return token;
-      const cleanWord = token.replace(/[^\p{L}\p{N}\p{M}]/gu, "");
+      const cleanWord = token.replace(/[^\p{L}\p{N}\p{M}\p{Cf}]/gu, "");
       if (!cleanWord) return token;
       return `<span class="lingualens-word" data-word="${cleanWord}">${token}</span>`;
     }).join("");
