@@ -1,7 +1,10 @@
 const MODEL_DEFAULTS = {
-  openrouter: "meta-llama/llama-3.1-8b-instruct:free",
+  openrouter: "openrouter/free",
   openai:     "gpt-4o-mini",
   anthropic:  "claude-haiku-4-5-20251001",
+  grok:       "grok-2-1212",
+  groq:       "llama-3.1-70b-versatile",
+  ollama:     "llama2",
   custom:     "",
 };
 
@@ -17,6 +20,9 @@ function syncProviderUI() {
   const p = providerEl.value;
   modelEl.placeholder = MODEL_DEFAULTS[p] || "";
   customEndpointRow.style.display = p === "custom" ? "block" : "none";
+  // Clear API key and model when provider changes (old key won't work for new provider)
+  apiKeyEl.value = "";
+  modelEl.value = "";
 }
 
 providerEl.addEventListener("change", syncProviderUI);
