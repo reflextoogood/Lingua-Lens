@@ -16,15 +16,34 @@ const customEndpointEl  = document.getElementById("custom-endpoint");
 const saveBtn           = document.getElementById("save-btn");
 const statusEl          = document.getElementById("status");
 
+let savedProvider = null;
+let savedSettings = {};
+
 function syncProviderUI() {
   const p = providerEl.value;
   modelEl.placeholder = MODEL_DEFAULTS[p] || "";
   customEndpointRow.style.display = p === "custom" ? "block" : "none";
+
+  // If user switches to a different provider, clear the fields
+  // (settings are provider-specific, can't reuse API key between providers)
+  if (p !== savedProvider) {
+    apiKeyEl.value = "";
+    modelEl.value = "";
+    customEndpointEl.value = "";
+  } else {
+    // If user switches back to the saved provider, restore the saved settings
+    apiKeyEl.value = savedSettings.apiKey || "";
+    modelEl.value = savedSettings.model || "";
+    customEndpointEl.value = savedSettings.customEndpoint || "";
+  }
 }
 
 providerEl.addEventListener("change", syncProviderUI);
 
 chrome.storage.local.get(["provider", "apiKey", "model", "customEndpoint"], (saved) => {
+  savedProvider = saved.provider;
+  savedSettings = { apiKey: saved.apiKey, model: saved.model, customEndpoint: saved.customEndpoint };
+
   if (saved.provider)       providerEl.value       = saved.provider;
   if (saved.apiKey)         apiKeyEl.value         = saved.apiKey;
   if (saved.model)          modelEl.value          = saved.model;
