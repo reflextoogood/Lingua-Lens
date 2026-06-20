@@ -217,6 +217,14 @@ document.addEventListener("click", async (e) => {
   const tooltip   = createTooltip(span, "...");
 
   chrome.storage.local.get(["provider", "apiKey", "model", "customEndpoint"], async (settings) => {
+    // Guard: check for chrome errors and ensure settings object exists
+    if (chrome.runtime.lastError || !settings) {
+      if (requestId !== currentRequestId) return;
+      tooltip.textContent = "Settings unavailable. Try again.";
+      tooltipTimeout = setTimeout(removeTooltip, 4000);
+      return;
+    }
+
     if (!settings.apiKey) {
       if (requestId !== currentRequestId) return;
       tooltip.textContent = "Open LinguaLens settings to add your API key.";
